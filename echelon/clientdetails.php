@@ -60,7 +60,7 @@ $totalRows_rs_aliases = mysql_num_rows($rs_aliases);
             &nbsp;&nbsp;
             <a href="http://whois.domaintools.com/<?php echo $row_rs_clientinfo['ip']; ?>" target="_blank"><img src="img/querry.gif" alt="whois search" name="whois" title = "Whois search" width="16" height="15" border="0" align="absmiddle" id="whois"></a>
             &nbsp;&nbsp;
-            <a href="http://geotool.servehttp.com/?ip=<?php echo $row_rs_clientinfo['ip']; ?>" target="_blank"><img src="img/world.gif" alt="Show Location on map" name="Map" title = "Show Location on map" width="16" height="15" border="0" align="absmiddle" id="map"></a>
+            <a href="http://www.geoiptool.com/fr/?IP=<?php echo $row_rs_clientinfo['ip']; ?>" target="_blank"><img src="img/world.gif" alt="Show Location on map" name="Map" title = "Show Location on map" width="16" height="15" border="0" align="absmiddle" id="map"></a>
             <?php } else { ?>
             (No IP address available)
             <?php } ?>

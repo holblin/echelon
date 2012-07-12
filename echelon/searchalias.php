@@ -65,7 +65,7 @@ if(!d){eval(id+"."+c);}
       <tr class="tabelinhoud">
         <td>
           <a href="#" onClick="tmt_winLoad('opener','clientdetails.php?game=<?php echo $game; ?>&amp;id=<?php echo $row_rs_aliassearch['client_id']; ?>');tmt_winControl('self','close()')">
-            <?php echo $row_rs_aliassearch['alias']; ?></a>
+            <?php echo htmlentities($row_rs_aliassearch['alias']); ?></a>
         </td>
         <td>
           @ 

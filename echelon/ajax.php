@@ -117,14 +117,22 @@ function talkback() {
   
   if ("".$talkback != "") {
     require_once('admin/rcon.php');
-    $command = "say ^4[B3](^3" . $_SESSION['xlradmin'] . "^4): ^3" . $talkback;
+    $command = "say ^4[B3](^3" . clean_rcon($_SESSION['xlradmin']) . "^4): ^3" . clean_rcon(stripslashes($talkback));
     //echo "command: " . $command;
     header('Content-type: text/plain');
     echo rcon($command)."\n";
+
+	global $database_b3connect, $b3connect;
+	mysql_select_db($database_b3connect, $b3connect);
+
+	$query = "INSERT INTO chatlog (msg_time, msg_type, client_id, client_name, client_team, msg) VALUES ( ".time().", \"TALKBACK\", NULL  , \"". mysql_real_escape_string($_SESSION['xlradmin'])."\", 1 , \"".mysql_real_escape_string($talkback)."\")";
+	$rs = mysql_query($query, $b3connect) or die(mysql_error());
+	$totalRows = mysql_num_rows($rs);
+
+
   } else {
     header("HTTP/1.1 400 Bad Request");
     echo "talkback message is empty";
     exit();
   }
 }
-?>

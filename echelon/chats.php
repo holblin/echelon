@@ -242,30 +242,39 @@ $queryString_rs_chats = sprintf("&totalRows_rs_chats=%d%s", $totalRows_rs_chats,
     }
     
   
-    function updateChat() { 
-      // display the loading image
-      $('body').append($('<div id="loadingimage" style="background-color:yellow;position:absolute;top:25px;right:35px">&nbsp;<i>updating</i>&nbsp;<img src="<?php echo $path; ?>/img/indicator.gif"></div>'));
-      
-      // fetch the new chat lines
-      $.getJSON("ajax.php", { 
-        'action': 'getLastChat', 
-        'lastId':$("tr:first", "tbody#chatlog").attr("id"),
-        'game': <?php echo $game; ?>
-      }, function(json){
-        //console.log(json);
-        if (json.length > 0) {
-          for (i=json.length-1; i>=0; i--) {
-            $("tr:first", "tbody#chatlog").before(
-              buildChatLine(json[i])
-                .css('background-color','lightblue')
-                .animate( { backgroundColor: 'white' }, 30000)
-             );
-          }
+    function updateChat() {
+
+		if ( typeof this.run == 'undefined' ) this.run = 0;
+
+		if (this.run == 0)
+		{
+			this.run = 1;
+			// display the loading image
+			$('body').append($('<div id="loadingimage" style="background-color:yellow;position:absolute;top:25px;right:35px">&nbsp;<i>updating</i>&nbsp;<img src="<?php echo $path; ?>/img/indicator.gif"></div>'));
+
+			// fetch the new chat lines
+			$.getJSON("ajax.php", { 
+			'action': 'getLastChat', 
+			'lastId':$("tr:first", "tbody#chatlog").attr("id"),
+			'game': <?php echo $game; ?>
+			}, function(json){
+				//console.log(json);
+				if (json.length > 0) {
+					for (i=json.length-1; i>=0; i--) {
+						$("tr:first", "tbody#chatlog").before(
+							buildChatLine(json[i])
+							.css('background-color','lightblue')
+							.animate( { backgroundColor: 'white' }, 30000)
+						);
+					}
+				}
+			});
+			
+			$('#loadingimage').fadeOut('slow',function(){$(this).remove();});
+			
+			this.run = 0;
         }
-      });
-      
-      $('#loadingimage').fadeOut('slow',function(){$(this).remove();});
-    }; 
+    };
     
     
     ////////////////////////// START when page is rendered ////////////////////////////
@@ -323,6 +332,8 @@ $queryString_rs_chats = sprintf("&totalRows_rs_chats=%d%s", $totalRows_rs_chats,
             
             if (status=='success') {
               //console.info(data);
+	          updateChat();
+			/*
               $("tr:first", "tbody#chatlog").before(
                 buildChatLine({
                   id: $("tr:first", "tbody#chatlog").attr("id"),
@@ -333,6 +344,7 @@ $queryString_rs_chats = sprintf("&totalRows_rs_chats=%d%s", $totalRows_rs_chats,
                   msg: $('input:text[@name=talkback]', 'form[@name=talkback]').val()
                 }).show().css('background-color','lightgreen')
                );
+			*/
             } 
             else if (typeof console != 'undefined') console.warn('something went wrong: ', data);
         
